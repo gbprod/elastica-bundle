@@ -81,24 +81,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertArrayHasKey('connections', $processed['clients']['default']);
-        $this->assertEquals(
-            '127.0.0.1',
-            $processed['clients']['default']['connections'][0]['host']
-        );
-        $this->assertEquals(
-            '9200',
-            $processed['clients']['default']['connections'][0]['port']
-        );
-
         $this->assertArrayHasKey('connections', $processed['clients']['my_client']);
-        $this->assertEquals(
-            '192.168.0.100',
-            $processed['clients']['my_client']['connections'][0]['host']
-        );
-        $this->assertEquals(
-            '9201',
-            $processed['clients']['my_client']['connections'][0]['port']
-        );
     }
 
     public function testProcessManyConnections()
@@ -122,25 +105,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $this->assertArrayHasKey('connections', $processed['clients']['default']);
-        $this->assertEquals(
-            '127.0.0.1',
-            $processed['clients']['default']['connections'][0]['host']
-        );
-        $this->assertEquals(
-            '9200',
-            $processed['clients']['default']['connections'][0]['port']
-        );
 
         $this->assertArrayHasKey('connections', $processed['clients']['default']);
-        $this->assertEquals(
-            '192.168.0.100',
-            $processed['clients']['default']['connections'][1]['host']
-        );
-        $this->assertEquals(
-            '9201',
-            $processed['clients']['default']['connections'][1]['port']
-        );
+        $connections = $processed['clients']['default']['connections'];
+        $this->assertEquals('127.0.0.1', $connections[0]['host']);
+        $this->assertEquals('9200', $connections[0]['port']);
+        $this->assertEquals('192.168.0.100', $connections[1]['host']);
+        $this->assertEquals('9201', $connections[1]['port']);
     }
 
 
