@@ -2,9 +2,12 @@
 
 namespace Tests\GBProd\ElasticaBundle\DependencyInjection;
 
+use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
+use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 /**
  * Tests for ElasticaExtension
@@ -21,7 +24,9 @@ class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->extension = new ElasticaExtension();
         $this->container = new ContainerBuilder();
-        }
+
+        $this->container->setParameter('kernel.debug', true);
+    }
 
     public function testCreateClients()
     {
@@ -68,5 +73,25 @@ class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->container->has('elastica.default_client'));
         $this->assertTrue($this->container->has('elastica.my_client_client'));
+    }
+
+    public function testLoadServices()
+    {
+        $this->container->registerExtension($this->extension);
+        $this->container->loadFromExtension($this->extension->getAlias());
+        $this->container->compile();
+
+        $this->assertTrue($this->container->has('elastica.logger'));
+        $this->assertTrue($this->container->has('elastica.data_collector'));
+
+        $this->assertInstanceOf(
+            ElasticaLogger::class,
+            $this->container->get('elastica.logger')
+        );
+
+        $this->assertInstanceOf(
+            ElasticaDataCollector::class,
+            $this->container->get('elastica.data_collector')
+        );
     }
 }

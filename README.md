@@ -73,10 +73,12 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 $client = $container->get('elastica.default_client');
 ```
 
-## Logger
+## todo
+ * [x] Clients
+ * [x] Logger
+ * [x] DataCollector
+ * [ ] Real condition tests
 
-#todo
+### Notes
 
-## DataCollector
-
-#todo
+`Logger` and `DataCollector` was copied from [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle).

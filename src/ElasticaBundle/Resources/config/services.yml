@@ -1,0 +1,15 @@
+services:
+    elastica.logger:
+        class: GBProd\ElasticaBundle\Logger\ElasticaLogger
+        arguments:
+            - '@?logger'
+            - '%kernel.debug%'
+        tags:
+            - { name: 'monolog.logger', channel: 'elastica' }
+
+    elastica.data_collector:
+        class: GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector
+        tags:
+            - { name: 'data_collector', template: 'ElasticaBundle:Collector:elastica', id: 'elastica' }
+        arguments:
+            - '@elastica.logger'
