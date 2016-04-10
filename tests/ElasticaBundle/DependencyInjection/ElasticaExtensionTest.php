@@ -21,7 +21,7 @@ class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->extension = new ElasticaExtension();
         $this->container = new ContainerBuilder();
-     }
+        }
 
     public function testCreateClients()
     {
