@@ -27,10 +27,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue([])
                     ->prototype('array')
                         ->beforeNormalization()
-                            ->ifTrue(function ($values) {
+                            ->ifTrue(function($values) {
                                 return is_array($values) && !array_key_exists('connections', $values);
                             })
-                            ->then(function ($values) {
+                            ->then(function($values) {
                                 return ['connections' => [$values]];
                             })
                         ->end()
