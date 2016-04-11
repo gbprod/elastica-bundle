@@ -5,8 +5,6 @@ namespace GBProd\ElasticaBundle\Elastica;
 use Elastica\Client as BaseClient;
 use Elastica\Request;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
-use Symfony\Component\Stopwatch\Stopwatch;
-use Elastica\Index;
 
 /**
  * Extends the default Elastica client to provide logging for errors that occur
@@ -17,20 +15,6 @@ use Elastica\Index;
 class Client extends BaseClient
 {
     /**
-     * Stores created indexes to avoid recreation.
-     *
-     * @var array
-     */
-    private $indexCache = array();
-
-    /**
-     * Symfony's debugging Stopwatch.
-     *
-     * @var Stopwatch|null
-     */
-    private $stopwatch;
-
-    /**
      * @param string $path
      * @param string $method
      * @param array  $data
@@ -40,10 +24,6 @@ class Client extends BaseClient
      */
     public function request($path, $method = Request::GET, $data = array(), array $query = array())
     {
-        if ($this->stopwatch) {
-            $this->stopwatch->start('es_request', 'fos_elastica');
-        }
-
         $start = microtime(true);
         $response = parent::request($path, $method, $data, $query);
         $responseData = $response->getData();
@@ -54,30 +34,7 @@ class Client extends BaseClient
             $this->logQuery($path, $method, $data, $query, $start, 0, 0);
         }
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stop('es_request');
-        }
-
         return $response;
-    }
-
-    public function getIndex($name)
-    {
-        if (isset($this->indexCache[$name])) {
-            return $this->indexCache[$name];
-        }
-
-        return $this->indexCache[$name] = new Index($this, $name);
-    }
-
-    /**
-     * Sets a stopwatch instance for debugging purposes.
-     *
-     * @param Stopwatch $stopwatch
-     */
-    public function setStopwatch(Stopwatch $stopwatch = null)
-    {
-        $this->stopwatch = $stopwatch;
     }
 
     /**
