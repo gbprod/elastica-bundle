@@ -11,6 +11,7 @@
 
 Really simple bundle to use [elastica](http://elastica.io/) within Symfony applications.
 Allows you to create elastica service in Symfony application.
+Aim is to create a ligthweigth alternative to [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle) because sometimes, we don't need all that stuffs.
 
 ## Installation
 
