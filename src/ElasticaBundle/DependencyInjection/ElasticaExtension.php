@@ -2,7 +2,7 @@
 
 namespace GBProd\ElasticaBundle\DependencyInjection;
 
-use Elastica\Client;
+use GBProd\ElasticaBundle\Elastica\Client;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

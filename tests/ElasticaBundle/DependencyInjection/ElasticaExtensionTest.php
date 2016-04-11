@@ -4,10 +4,10 @@ namespace Tests\GBProd\ElasticaBundle\DependencyInjection;
 
 use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
+use GBProd\ElasticaBundle\Elastica\Client;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 
 /**
  * Tests for ElasticaExtension
@@ -46,7 +46,7 @@ class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->container->has('elastica.default_client'));
 
         $clientDefinition = $this->container->getDefinition('elastica.default_client');
-        $this->assertEquals(\Elastica\Client::class, $clientDefinition->getClass());
+        $this->assertEquals(Client::class, $clientDefinition->getClass());
         $argument = $clientDefinition->getArgument(0);
         $this->assertEquals('127.0.0.1', $argument['connections'][0]['host']);
         $this->assertEquals('9200', $argument['connections'][0]['port']);
