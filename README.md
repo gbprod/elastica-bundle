@@ -11,7 +11,7 @@
 
 Really simple bundle to use [elastica](http://elastica.io/) within Symfony applications.
 Allows you to create elastica service in Symfony application.
-Aim is to create a ligthweigth alternative to [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle) because sometimes, we don't need all that stuffs.
+The aim is to create a ligthweigth alternative to [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle), because sometimes, we don't need all that stuffs.
 
 ## Installation
 
@@ -74,12 +74,6 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 $client = $container->get('elastica.default_client');
 ```
 
-## todo
- * [x] Clients
- * [x] Logger
- * [x] DataCollector
- * [ ] Real condition tests
-
 ### Notes
 
-`Logger` and `DataCollector` was copied from [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle).
+`Logger` and `DataCollector` has been copied from [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle). Thx
