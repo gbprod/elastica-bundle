@@ -6,6 +6,7 @@ use Elastica\Client as BaseClient;
 use Elastica\Request;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Elastica\Index;
 
 /**
  * Extends the default Elastica client to provide logging for errors that occur
