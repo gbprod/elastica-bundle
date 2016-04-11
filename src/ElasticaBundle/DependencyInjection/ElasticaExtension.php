@@ -51,7 +51,7 @@ class ElasticaExtension extends Extension
             ->addMethodCall('setLogger', [
                 new Reference('elastica.logger')
             ])
-            ->addMethodCall('setConfig', [
+            ->addMethodCall('setConfigValue', [
                 'log',
                 $container->getParameter('kernel.debug')
             ])
