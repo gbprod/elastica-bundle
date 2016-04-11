@@ -4,10 +4,10 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/?branch=master)
 
-[![Latest Stable Version](https://poser.pugx.org/gbprod/elastica-bundle/v/stable)](https://packagist.org/packages/gbprod/doctrine-specification)
-[![Total Downloads](https://poser.pugx.org/gbprod/elastica-bundle/downloads)](https://packagist.org/packages/gbprod/doctrine-specification)
-[![Latest Unstable Version](https://poser.pugx.org/gbprod/elastica-bundle/v/unstable)](https://packagist.org/packages/gbprod/doctrine-specification)
-[![License](https://poser.pugx.org/gbprod/elastica-bundle/license)](https://packagist.org/packages/gbprod/doctrine-specification)
+[![Latest Stable Version](https://poser.pugx.org/gbprod/elastica-bundle/v/stable)](https://packagist.org/packages/gbprod/elastica-bundle)
+[![Total Downloads](https://poser.pugx.org/gbprod/elastica-bundle/downloads)](https://packagist.org/packages/gbprod/elastica-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/gbprod/elastica-bundle/v/unstable)](https://packagist.org/packages/gbprod/elastica-bundle)
+[![License](https://poser.pugx.org/gbprod/elastica-bundle/license)](https://packagist.org/packages/gbprod/elastica-bundle)
 
 Really simple bundle to use [elastica](http://elastica.io/) within Symfony applications.
 Allows you to create elastica service in Symfony application.
