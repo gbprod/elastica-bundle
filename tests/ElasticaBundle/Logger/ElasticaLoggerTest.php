@@ -177,4 +177,19 @@ class ElasticaLoggerTest extends \PHPUnit_Framework_TestCase
 
         $elasticaLogger->log($level, $message, $context);
     }
+
+    /**
+     * @dataProvider logLevels
+     */
+    public function testMessagesAreNotLoggedIfNoLogger($level)
+    {
+        $message = 'foo';
+        $context = array('data');
+
+        $elasticaLogger = new ElasticaLogger(null);
+
+        $this->assertNull(
+            call_user_func(array($elasticaLogger, $level), $message, $context)
+        );
+    }
 }
