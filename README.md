@@ -1,7 +1,7 @@
 # ElasticaBundle
 
 [![Build Status](https://travis-ci.org/gbprod/elastica-bundle.svg?branch=master)](https://travis-ci.org/gbprod/elastica-bundle)
-[![Code Coverage](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/?branch=master)
+[![codecov](https://codecov.io/gh/gbprod/elastica-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/gbprod/elastica-bundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gbprod/elastica-bundle/?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/gbprod/elastica-bundle/v/stable)](https://packagist.org/packages/gbprod/elastica-bundle)
