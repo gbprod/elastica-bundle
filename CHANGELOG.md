@@ -7,6 +7,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Added
 
 - This Changelog
+- VersionEye badge
+
+Updated
+
+- Set scrutinizer codesniffer to PSR2
 
 ## [0.1.2](https://github.com/gbprod/elastica-bundle/compare/v0.1.1...v0.1.2)
 
