@@ -3,85 +3,78 @@
 namespace GBProd\ElasticaBundle\Tests\DataCollector;
 
 use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
+use GBProd\ElasticaBundle\Logger\ElasticaLogger;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author Richard Miller <info@limethinking.co.uk>
+ * Tests for ElasticaDataCollector
+ *
+ * @author GBProd <contact@gb-prod.fr>
  */
 class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
+    private $request;
+
+    private $response;
+
+    private $logger;
+
+    private $collector;
+
+    public function setUp()
+    {
+        $this->request  = $this->prophesize(Request::class);
+        $this->response = $this->prophesize(Response::class);
+        $this->logger   = $this->prophesize(ElasticaLogger::class);
+
+        $this->collector = new ElasticaDataCollector($this->logger->reveal());
+    }
+
     public function testCorrectAmountOfQueries()
     {
-        /** @var $requestMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Request */
-        $requestMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $responseMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Response */
-        $responseMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $loggerMock \PHPUnit_Framework_MockObject_MockObject|\GBProd\ElasticaBundle\Logger\ElasticaLogger */
-        $loggerMock = $this->getMockBuilder('GBProd\ElasticaBundle\Logger\ElasticaLogger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $totalQueries = rand();
 
-        $loggerMock->expects($this->once())
-            ->method('getNbQueries')
-            ->will($this->returnValue($totalQueries));
+        $this->logger->getNbQueries()
+            ->willReturn($totalQueries)
+            ->shouldBeCalled()
+        ;
 
-        $elasticaDataCollector = new ElasticaDataCollector($loggerMock);
-        $elasticaDataCollector->collect($requestMock, $responseMock);
-        $this->assertEquals($totalQueries, $elasticaDataCollector->getQueryCount());
+        $this->logger->getQueries()->willReturn([]);
+
+        $this->collector->collect(
+            $this->request->reveal(),
+            $this->response->reveal()
+        );
+
+        $this->assertEquals($totalQueries, $this->collector->getQueryCount());
     }
 
     public function testCorrectQueriesReturned()
     {
-        /** @var $requestMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Request */
-        $requestMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $responseMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Response */
-        $responseMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $loggerMock \PHPUnit_Framework_MockObject_MockObject|\GBProd\ElasticaBundle\Logger\ElasticaLogger */
-        $loggerMock = $this->getMockBuilder('GBProd\ElasticaBundle\Logger\ElasticaLogger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $queries = array('testQueries');
 
-        $loggerMock->expects($this->once())
-            ->method('getQueries')
-            ->will($this->returnValue($queries));
+        $this->logger
+            ->getQueries()
+            ->willReturn($queries)
+            ->shouldBeCalled()
+        ;
 
-        $elasticaDataCollector = new ElasticaDataCollector($loggerMock);
-        $elasticaDataCollector->collect($requestMock, $responseMock);
-        $this->assertEquals($queries, $elasticaDataCollector->getQueries());
+        $this->logger
+            ->getNbQueries()
+            ->willReturn(10)
+        ;
+
+        $this->collector->collect(
+            $this->request->reveal(),
+            $this->response->reveal()
+        );
+
+        $this->assertEquals($queries, $this->collector->getQueries());
     }
 
     public function testCorrectQueriesTime()
     {
-        /** @var $requestMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Request */
-        $requestMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $responseMock \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Response */
-        $responseMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var $loggerMock \PHPUnit_Framework_MockObject_MockObject|\GBProd\ElasticaBundle\Logger\ElasticaLogger */
-        $loggerMock = $this->getMockBuilder('GBProd\ElasticaBundle\Logger\ElasticaLogger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $queries = array(array(
             'engineMS' => 15,
             'executionMS' => 10
@@ -90,12 +83,21 @@ class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
             'executionMS' => 20
         ));
 
-        $loggerMock->expects($this->once())
-            ->method('getQueries')
-            ->will($this->returnValue($queries));
+        $this->logger
+            ->getQueries()
+            ->willReturn($queries)
+        ;
 
-        $elasticaDataCollector = new ElasticaDataCollector($loggerMock);
-        $elasticaDataCollector->collect($requestMock, $responseMock);
-        $this->assertEquals(40, $elasticaDataCollector->getTime());
+        $this->logger
+            ->getNbQueries()
+            ->willReturn(2)
+        ;
+
+        $this->collector->collect(
+            $this->request->reveal(),
+            $this->response->reveal()
+        );
+
+        $this->assertEquals(40, $this->collector->getTime());
     }
 }

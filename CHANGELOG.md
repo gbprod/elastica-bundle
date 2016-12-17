@@ -8,6 +8,8 @@ Added
 
 - This Changelog
 - VersionEye badge
+- Drop symfony 2.3 compatibility
+- Support Elastica 5.0
 
 Updated
 
