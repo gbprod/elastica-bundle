@@ -3,10 +3,12 @@
 namespace GBProd\ElasticaBundle\DependencyInjection;
 
 use Elastica\Client;
+use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -33,7 +35,33 @@ class ElasticaExtension extends Extension
 
         $loader->load('services.yml');
 
+        $this->loadLogger($config, $container);
         $this->loadClients($config, $container);
+    }
+
+    private function loadLogger(array $config, ContainerBuilder $container)
+    {
+        $definition = $container
+            ->register('elastica.logger', ElasticaLogger::class)
+            ->addArgument($this->createLoggerReference($config))
+            ->addArgument('%kernel.debug%')
+        ;
+
+        if ('logger' === $config['logger']) {
+            $definition->addTag('monolog.logger', ['channel' => 'elastica']);
+        }
+    }
+
+    private function createLoggerReference(array $config)
+    {
+        if (null !== $config['logger']) {
+            return new Reference(
+                $config['logger'],
+                ContainerInterface::IGNORE_ON_INVALID_REFERENCE
+            );
+        }
+
+        return null;
     }
 
     private function loadClients(array $config, ContainerBuilder $container)
