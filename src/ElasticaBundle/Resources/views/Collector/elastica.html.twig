@@ -56,21 +56,28 @@
             <p>No queries were performed.</p>
         </div>
     {% else %}
-        <ul class="alt">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th class="text-right">Time</th>
+                    <th style="width: 100%">Query</th>
+                </tr>
+            </thead>
             {% for key, query in collector.queries %}
-                <li class="{{ cycle(['odd', 'even'], loop.index) }}">
+            <tr>
+                <td class="text-right nowrap">{{ key }}</td>
+                <td class="text-right nowrap">{{ query.response.took }}ms</td>
+                <td>
                     <strong>Path</strong>: {{ query.request.path }}<br />
                     <strong>Query</strong>: {{ query.request.data|url_encode }}<br />
                     <strong>Method</strong>: {{ query.request.method }} <small>({{ query.request.connection.transport|default('Http') }} on {{ query.request.connection.host }}:{{ query.request.connection.port }})</small>
                     <div>
                         <code>{{ query.request.data|json_encode }}</code>
                     </div>
-                    <strong>Query time</strong>: {{ query.response.took }} ms<br />
                     <strong>Item count</strong>: {{ query.response.hits.total }}<br />
                     {% if query.connection.transport|default('Http') in ['Http', 'Https'] %}
                         <a href="#elastica_curl_query_{{ key }}" onclick="return toggle_details(this);" style="text-decoration: none;" title="Get the cURL repeatable query">
-                            <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}" style="display: inline; width: 12px; height: 12px; vertical-align: bottom;" />
-                            <img alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}" style="display: none; width: 12px; height: 12px; vertical-align: bottom;" />
                             <small>Display cURL query</small>
                         </a>
                     {% endif %}
@@ -79,26 +86,18 @@
                             <code>curl -X{{ query.request.method }} '{{ query.request.connection.transport|default('Http')|lower }}://{{ query.request.connection.host }}:{{ query.request.connection.port }}/{{ query.request.path }}{% if query.request.data|length %}?{{ query.request.data|url_encode }}{% endif %}' -d '{{ query.request.data|json_encode }}'</code>
                         </div>
                     {% endif %}
-                </li>
+                </td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
         <script type="text/javascript">//<![CDATA[
             function toggle_details(link) {
-                "use strict";
-
-                var sections = link.children;
-
-                if (sections[0].style.display != 'none') {
-                    sections[0].style.display = 'none';
-                    sections[1].style.display = 'inline';
-
-                    document.getElementById(link.hash.replace("#", "")).style.display = 'block';
+                var details = document.getElementById(link.hash.replace("#", ""));
+                if (details.style.display != 'none') {
+                    details.style.display = 'none';
                 } else {
-                    sections[0].style.display = 'inline';
-                    sections[1].style.display = 'none';
-
-                    document.getElementById(link.hash.replace("#", "")).style.display = 'none';
+                    details.style.display = 'block';
                 }
 
                 return false;
