@@ -7,6 +7,7 @@ use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -75,23 +76,55 @@ class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->container->has('elastica.my_client_client'));
     }
 
-    public function testLoadServices()
+    public function testLoadDataCollector()
     {
         $this->container->registerExtension($this->extension);
         $this->container->loadFromExtension($this->extension->getAlias());
         $this->container->compile();
 
-        $this->assertTrue($this->container->has('elastica.logger'));
         $this->assertTrue($this->container->has('elastica.data_collector'));
-
-        $this->assertInstanceOf(
-            ElasticaLogger::class,
-            $this->container->get('elastica.logger')
-        );
 
         $this->assertInstanceOf(
             ElasticaDataCollector::class,
             $this->container->get('elastica.data_collector')
         );
+    }
+
+    public function testLoadDefaultLogger()
+    {
+        $this->extension->load([], $this->container);
+
+        $this->assertTrue($this->container->has('elastica.logger'));
+
+        $loggerDefinition = $this->container->getDefinition('elastica.logger');
+
+        $this->assertEquals(ElasticaLogger::class, $loggerDefinition->getClass());
+        $this->assertTrue($loggerDefinition->hasTag('monolog.logger'));
+    }
+
+    public function testLoadOverridedLogger()
+    {
+        $this->extension->load([['logger' => 'logger_id']], $this->container);
+
+        $this->assertTrue($this->container->has('elastica.logger'));
+
+        $loggerDefinition = $this->container->getDefinition('elastica.logger');
+
+        $this->assertEquals(ElasticaLogger::class, $loggerDefinition->getClass());
+        $this->assertInstanceOf(Reference::class, $loggerDefinition->getArgument(0));
+        $this->assertEquals('logger_id', $loggerDefinition->getArgument(0)->__toString());
+        $this->assertFalse($loggerDefinition->hasTag('monolog.logger'));
+    }
+
+    public function testLoadWithoutLogger()
+    {
+        $this->extension->load([['logger' => null]], $this->container);
+
+        $this->assertTrue($this->container->has('elastica.logger'));
+
+        $loggerDefinition = $this->container->getDefinition('elastica.logger');
+
+        $this->assertEquals(ElasticaLogger::class, $loggerDefinition->getClass());
+        $this->assertNull($loggerDefinition->getArgument(0));
     }
 }

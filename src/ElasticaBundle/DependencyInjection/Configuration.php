@@ -22,6 +22,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('logger')
+                    ->defaultValue('logger')
+                ->end()
                 ->arrayNode('clients')
                     ->useAttributeAsKey('id')
                     ->defaultValue([])

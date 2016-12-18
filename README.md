@@ -40,6 +40,8 @@ public function registerBundles()
 
 ## Configuration
 
+### Clients
+
 ```yaml
 # app/config/config.yml
 elastica_bundle:
@@ -67,6 +69,23 @@ elastica_bundle:
 
 Available options: `host`, `port`, `path`, `url`, `proxy`, `transport`, `persistent`, `timeout` and `proxy`
 
+### Custom logger
+
+By default, this bundle logs queries using the Symfony's default logger (`@logger`) into an `elastica` channel.
+
+You can use a customized logger with the `logger` configuration option:   
+
+
+```yaml
+# app/config/config.yml
+elastica_bundle:
+    logger: my_custom_logger_service_id
+    clients:
+        default:
+            host: 127.0.0.1
+            port: 9200
+```
+
 ## Usage
 
 You can now use service `elastica.default_client` or `elastica.my_other_client`
@@ -74,3 +93,4 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 ```php
 $client = $container->get('elastica.default_client');
 ```
+

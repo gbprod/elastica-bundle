@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  - Use Elastica Logger for DataCollector
  - Better DataCollector UI #11
 
+### Added
+
+ - Customize logger
+
 ## [0.2.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v0.2.0)
 
 Added

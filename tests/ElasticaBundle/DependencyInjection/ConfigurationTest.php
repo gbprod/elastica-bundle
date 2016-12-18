@@ -25,7 +25,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $processed = $this->process([]);
 
         $this->assertEquals([
-            'clients' => []
+            'clients' => [],
+            'logger'  => 'logger',
         ], $processed);
     }
 
@@ -113,7 +114,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('192.168.0.100', $connections[1]['host']);
         $this->assertEquals('9201', $connections[1]['port']);
     }
-
 
     public function testProcessAddDefaultValuesForConnections()
     {
