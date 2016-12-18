@@ -2,9 +2,9 @@
 
 namespace Tests\GBProd\ElasticaBundle\DependencyInjection;
 
+use Elastica\Client;
 use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
-use GBProd\ElasticaBundle\Elastica\Client;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
