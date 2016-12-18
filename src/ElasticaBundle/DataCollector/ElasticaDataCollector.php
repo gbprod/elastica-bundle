@@ -30,21 +30,36 @@ class ElasticaDataCollector extends DataCollector
         $this->data['queries'] = $this->logger->getQueries();
     }
 
+    /**
+     * Nb of queries executed
+     *
+     * @return integer
+     */
     public function getQueryCount()
     {
         return $this->data['nb_queries'];
     }
 
+    /**
+     * Queries
+     *
+     * @return array
+     */
     public function getQueries()
     {
         return $this->data['queries'];
     }
 
+    /**
+     * Execution time
+     *
+     * @return integer
+     */
     public function getTime()
     {
         $time = 0;
         foreach ($this->data['queries'] as $query) {
-            $time += $query['engineMS'];
+            $time += $query['response']['took'];
         }
 
         return $time;

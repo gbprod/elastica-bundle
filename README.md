@@ -74,7 +74,3 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 ```php
 $client = $container->get('elastica.default_client');
 ```
-
-### Notes
-
-`Logger` and `DataCollector` has been copied from [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle). Thx

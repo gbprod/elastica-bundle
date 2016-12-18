@@ -75,13 +75,10 @@ class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testCorrectQueriesTime()
     {
-        $queries = array(array(
-            'engineMS' => 15,
-            'executionMS' => 10
-        ), array(
-            'engineMS' => 25,
-            'executionMS' => 20
-        ));
+        $queries = [
+            ['response' => ['took' => 15]],
+            ['response' => ['took' => 25]],
+        ];
 
         $this->logger
             ->getQueries()
@@ -99,5 +96,10 @@ class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(40, $this->collector->getTime());
+    }
+
+    public function testGetName()
+    {
+        $this->assertEquals('elastica', $this->collector->getName());
     }
 }

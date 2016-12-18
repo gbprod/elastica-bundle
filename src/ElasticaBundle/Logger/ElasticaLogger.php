@@ -5,12 +5,9 @@ namespace GBProd\ElasticaBundle\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Logger for the Elastica.
+ * Logger for Elastica
  *
- * The {@link logQuery()} method is configured as the logger callable in the
- * service container.
- *
- * @author Gordon Franke <info@nevalon.de>
+ * @author GBProd <contact@gb-prod.fr>
  */
 class ElasticaLogger implements LoggerInterface
 {
@@ -38,41 +35,7 @@ class ElasticaLogger implements LoggerInterface
     public function __construct(LoggerInterface $logger = null, $debug = false)
     {
         $this->logger = $logger;
-        $this->debug = $debug;
-    }
-
-    /**
-     * Logs a query.
-     *
-     * @param string $path       Path to call
-     * @param string $method     Rest method to use (GET, POST, DELETE, PUT)
-     * @param array  $data       Arguments
-     * @param float  $time       Execution time
-     * @param array  $connection Host, port, transport, and headers of the query
-     * @param array  $query      Arguments
-     */
-    public function logQuery($path, $method, $data, $time, $connection = array(), $query = array(), $engineTime = 0, $itemCount = 0)
-    {
-        if ($this->debug) {
-            $e = new \Exception();
-
-            $this->queries[] = array(
-                'path' => $path,
-                'method' => $method,
-                'data' => $data,
-                'executionMS' => $time,
-                'engineMS' => $engineTime,
-                'connection' => $connection,
-                'queryString' => $query,
-                'itemCount' => $itemCount,
-                'backtrace' => $e->getTraceAsString()
-            );
-        }
-
-        if (null !== $this->logger) {
-            $message = sprintf("%s (%s) %0.2f ms", $path, $method, $time * 1000);
-            $this->logger->info($message, (array) $data);
-        }
+        $this->debug  = $debug;
     }
 
     /**
@@ -93,6 +56,22 @@ class ElasticaLogger implements LoggerInterface
     public function getQueries()
     {
         return $this->queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function debug($message, array $context = array())
+    {
+        if ($this->debug) {
+            $this->queries[] = $context;
+        }
+
+        if (!$this->logger) {
+            return;
+        }
+
+        return $this->logger->debug($message, $context);
     }
 
     /**
@@ -177,18 +156,6 @@ class ElasticaLogger implements LoggerInterface
         }
 
         return $this->logger->info($message, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function debug($message, array $context = array())
-    {
-        if (!$this->logger) {
-            return;
-        }
-
-        return $this->logger->debug($message, $context);
     }
 
     /**
