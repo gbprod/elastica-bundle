@@ -94,3 +94,14 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 $client = $container->get('elastica.default_client');
 ```
 
+## Tests
+
+Clone this repository (or a fork). You should have `php` and `composer` installed.
+
+```bash
+make test-unit
+```
+
+## Contributing
+
+Feel free to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md) file for more informations.
