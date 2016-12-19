@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
  - Customize logger
+ - Contributing file
 
 ## [0.2.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v0.2.0)
 
