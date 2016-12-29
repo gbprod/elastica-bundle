@@ -67,11 +67,9 @@ class ElasticaLogger implements LoggerInterface
             $this->queries[] = $context;
         }
 
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->debug($message, $context);
         }
-
-        return $this->logger->debug($message, $context);
     }
 
     /**
@@ -79,11 +77,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function emergency($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->emergency($message, $context);
         }
-
-        return $this->logger->emergency($message, $context);
     }
 
     /**
@@ -91,11 +87,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function alert($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->alert($message, $context);
         }
-
-        return $this->logger->alert($message, $context);
     }
 
     /**
@@ -103,11 +97,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function critical($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->critical($message, $context);
         }
-
-        return $this->logger->critical($message, $context);
     }
 
     /**
@@ -115,11 +107,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function error($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->error($message, $context);
         }
-
-        return $this->logger->error($message, $context);
     }
 
     /**
@@ -127,11 +117,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function warning($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->warning($message, $context);
         }
-
-        return $this->logger->warning($message, $context);
     }
 
     /**
@@ -139,11 +127,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function notice($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->notice($message, $context);
         }
-
-        return $this->logger->notice($message, $context);
     }
 
     /**
@@ -151,11 +137,9 @@ class ElasticaLogger implements LoggerInterface
      */
     public function info($message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->info($message, $context);
         }
-
-        return $this->logger->info($message, $context);
     }
 
     /**
@@ -163,10 +147,8 @@ class ElasticaLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = array())
     {
-        if (!$this->logger) {
-            return;
+        if ($this->logger) {
+            $this->logger->log($level, $message, $context);
         }
-
-        return $this->logger->log($level, $message, $context);
     }
 }
