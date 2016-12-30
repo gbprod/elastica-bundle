@@ -98,6 +98,32 @@ class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(40, $this->collector->getTime());
     }
 
+    public function testQueriesTimeWithResponseWithoutData()
+    {
+        $queries = [
+            ['response' => ['took' => 15]],
+            ['response' => ['took' => 25]],
+            ['response' => []],
+        ];
+
+        $this->logger
+            ->getQueries()
+            ->willReturn($queries)
+        ;
+
+        $this->logger
+            ->getNbQueries()
+            ->willReturn(2)
+        ;
+
+        $this->collector->collect(
+            $this->request->reveal(),
+            $this->response->reveal()
+        );
+
+        $this->assertEquals(40, $this->collector->getTime());
+    }
+
     public function testGetName()
     {
         $this->assertEquals('elastica', $this->collector->getName());

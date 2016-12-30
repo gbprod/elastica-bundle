@@ -10,12 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Data collector collecting elastica statistics.
  *
- * @author Gordon Franke <info@nevalon.de>
+ * @author Gilles <gilles@1001pharmacies.com>
  */
 class ElasticaDataCollector extends DataCollector
 {
+    /**
+     * @var ElasticaLogger
+     */
     protected $logger;
 
+    /**
+     * @param ElasticaLogger $logger
+     */
     public function __construct(ElasticaLogger $logger)
     {
         $this->logger = $logger;
@@ -59,7 +65,9 @@ class ElasticaDataCollector extends DataCollector
     {
         $time = 0;
         foreach ($this->data['queries'] as $query) {
-            $time += $query['response']['took'];
+            if (array_key_exists('took', $query['response'])) {
+                $time += $query['response']['took'];
+            }
         }
 
         return $time;

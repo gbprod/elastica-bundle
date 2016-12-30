@@ -67,15 +67,17 @@
             {% for key, query in collector.queries %}
             <tr>
                 <td class="text-right nowrap">{{ key }}</td>
-                <td class="text-right nowrap">{{ query.response.took }}ms</td>
+                <td class="text-right nowrap">{{ query.response.took|default(0) }}ms</td>
                 <td>
                     <strong>Path</strong>: {{ query.request.path }}<br />
-                    <strong>Query</strong>: {{ query.request.data|url_encode }}<br />
+                    <strong>Query</strong>: {{ query.request.query|url_encode }}<br />
                     <strong>Method</strong>: {{ query.request.method }} <small>({{ query.request.connection.transport|default('Http') }} on {{ query.request.connection.host }}:{{ query.request.connection.port }})</small>
                     <div>
                         <code>{{ query.request.data|json_encode }}</code>
                     </div>
+                    {% if query.response.hits is defined %}
                     <strong>Item count</strong>: {{ query.response.hits.total }}<br />
+                    {% endif %}
                     {% if query.connection.transport|default('Http') in ['Http', 'Https'] %}
                         <a href="#elastica_curl_query_{{ key }}" onclick="return toggle_details(this);" style="text-decoration: none;" title="Get the cURL repeatable query">
                             <small>Display cURL query</small>
@@ -83,7 +85,7 @@
                     {% endif %}
                     {% if query.request.connection.transport|default('Http') in ['Http', 'Https'] %}
                         <div style="display: none;" id="elastica_curl_query_{{ key }}">
-                            <code>curl -X{{ query.request.method }} '{{ query.request.connection.transport|default('Http')|lower }}://{{ query.request.connection.host }}:{{ query.request.connection.port }}/{{ query.request.path }}{% if query.request.data|length %}?{{ query.request.data|url_encode }}{% endif %}' -d '{{ query.request.data|json_encode }}'</code>
+                            <code>curl -X{{ query.request.method }} '{{ query.request.connection.transport|default('Http')|lower }}://{{ query.request.connection.host }}:{{ query.request.connection.port }}/{{ query.request.path }}{% if query.request.query|length %}?{{ query.request.data|url_encode }}{% endif %}' -d '{{ query.request.data|json_encode }}'</code>
                         </div>
                     {% endif %}
                 </td>
