@@ -96,7 +96,7 @@ $client = $container->get('elastica.default_client');
 
 ## Tests
 
-Clone this repository (or a fork). You should have `php` and `composer` installed.
+Clone this repository (or a fork). You should have `php>=5.6` and `composer` installed.
 
 ```bash
 make test-unit
