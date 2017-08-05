@@ -44,7 +44,7 @@ public function registerBundles()
 
 ```yaml
 # app/config/config.yml
-elastica_bundle:
+elastica:
     clients:
         default:
             host: 127.0.0.1
@@ -59,7 +59,7 @@ If using a cluster:
 
 ```yaml
 # app/config/config.yml
-elastica_bundle:
+elastica:
     clients:
         default:
             connections:
@@ -78,7 +78,7 @@ You can use a customized logger with the `logger` configuration option:
 
 ```yaml
 # app/config/config.yml
-elastica_bundle:
+elastica:
     logger: my_custom_logger_service_id
     clients:
         default:
