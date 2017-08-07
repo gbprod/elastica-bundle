@@ -14,9 +14,6 @@ class ElasticaBundleTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $this->assertInstanceOf(
-            ElasticaBundle::class,
-            new ElasticaBundle()
-        );
+        $this->assertInstanceOf(ElasticaBundle::class, new ElasticaBundle());
     }
 }
