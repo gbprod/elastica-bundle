@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.0.0...HEAD)
 
+ - fix documentation
+ - fix phpunit version
+
 ## [1.0.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v1.0.0)
 
 ### Changed
