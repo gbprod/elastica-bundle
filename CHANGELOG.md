@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.0.0...HEAD)
+## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.0.1...HEAD)
+
+## [v1.0.1](https://github.com/gbprod/elastica-bundle/compare/v1.0.0...v1.0.1)
+
+### Changed
 
  - fix documentation
  - fix phpunit version
