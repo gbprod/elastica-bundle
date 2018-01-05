@@ -5,3 +5,4 @@ services:
             - { name: 'data_collector', template: 'ElasticaBundle:Collector:elastica', id: 'elastica' }
         arguments:
             - '@elastica.logger'
+        public: true

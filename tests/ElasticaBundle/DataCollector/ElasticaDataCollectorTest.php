@@ -4,6 +4,7 @@ namespace GBProd\ElasticaBundle\Tests\DataCollector;
 
 use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author GBProd <contact@gb-prod.fr>
  */
-class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
+class ElasticaDataCollectorTest extends TestCase
 {
     private $request;
 
@@ -127,5 +128,33 @@ class ElasticaDataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $this->assertEquals('elastica', $this->collector->getName());
+    }
+
+    public function testReset()
+    {
+        $queries = [
+            ['response' => ['took' => 15]],
+            ['response' => ['took' => 25]],
+        ];
+
+        $this->logger
+            ->getQueries()
+            ->willReturn($queries)
+        ;
+
+        $this->logger
+            ->getNbQueries()
+            ->willReturn(2)
+        ;
+
+        $this->collector->collect(
+            $this->request->reveal(),
+            $this->response->reveal()
+        );
+
+        $this->collector->reset();
+
+        $this->assertEquals(0, $this->collector->getQueryCount());
+        $this->assertEquals([], $this->collector->getQueries());
     }
 }

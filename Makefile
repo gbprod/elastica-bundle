@@ -5,10 +5,10 @@ COMPOSER?=composer
 
 install: vendor
 
-test-unit: vendor
+test-unit: install
 	$(PHP) vendor/bin/phpunit
 
-test-coverage: vendor
+test-coverage: install
 	$(PHP) vendor/bin/phpunit --coverage-text
 
 vendor: composer.lock

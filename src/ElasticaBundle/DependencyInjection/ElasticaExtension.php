@@ -45,6 +45,7 @@ class ElasticaExtension extends Extension
             ->register('elastica.logger', ElasticaLogger::class)
             ->addArgument($this->createLoggerReference($config))
             ->addArgument('%kernel.debug%')
+            ->setPublic(true)
         ;
 
         if ('logger' === $config['logger']) {
@@ -83,6 +84,7 @@ class ElasticaExtension extends Extension
                 'log',
                 $container->getParameter('kernel.debug')
             ])
+            ->setPublic(true)
         ;
     }
 

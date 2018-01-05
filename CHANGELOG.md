@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.0.1...HEAD)
 
+ - Symfony 4 compatibility
+ - Elastica 6 compatibility
+
 ## [v1.0.1](https://github.com/gbprod/elastica-bundle/compare/v1.0.0...v1.0.1)
 
 ### Changed

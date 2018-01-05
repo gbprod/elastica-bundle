@@ -6,6 +6,7 @@ use Elastica\Client;
 use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author gbprod <contact@gb-prod.fr>
  */
-class ElasticaExtensionTest extends \PHPUnit_Framework_TestCase
+class ElasticaExtensionTest extends TestCase
 {
     private $extension;
 

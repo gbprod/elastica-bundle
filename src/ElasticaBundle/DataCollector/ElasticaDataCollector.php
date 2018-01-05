@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Data collector collecting elastica statistics.
  *
- * @author Gilles <gilles@1001pharmacies.com>
+ * @author gbprod <contact@gb-prod.fr>
  */
 class ElasticaDataCollector extends DataCollector
 {
@@ -79,5 +79,16 @@ class ElasticaDataCollector extends DataCollector
     public function getName()
     {
         return 'elastica';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = [
+            'nb_queries' => 0,
+            'queries' => [],
+        ];
     }
 }
