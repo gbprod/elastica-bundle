@@ -3,6 +3,7 @@
 namespace Tests\GBProd\ElasticaBundle\Logger;
 
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -10,7 +11,7 @@ use Psr\Log\LoggerInterface;
  *
  * @author GBProd <contact@gb-prod.fr>
  */
-class ElasticaLoggerTest extends \PHPUnit_Framework_TestCase
+class ElasticaLoggerTest extends TestCase
 {
     /**
      * @dataProvider getLevels

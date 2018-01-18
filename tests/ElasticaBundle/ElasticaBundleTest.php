@@ -3,6 +3,7 @@
 namespace Tests\GBProd\ElasticaBundle;
 
 use GBProd\ElasticaBundle\ElasticaBundle;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author gbprod <contact@gb-prod.fr>
  */
-class ElasticaBundleTest extends \PHPUnit_Framework_TestCase
+class ElasticaBundleTest extends TestCase
 {
     public function testConstruct()
     {
