@@ -2,10 +2,12 @@
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.0.1...HEAD)
+## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.1.0...HEAD)
 
- - Symfony 4 compatibility
- - Elastica 6 compatibility
+## [v1.1.0](https://github.com/gbprod/elastica-bundle/compare/v1.0.1...HEAD)
+
+ - Symfony 4 compatibility (#20)
+ - Elastica 6 compatibility (#20)
 
 ## [v1.0.1](https://github.com/gbprod/elastica-bundle/compare/v1.0.0...v1.0.1)
 
