@@ -1,0 +1,5 @@
+parameters:
+    kernel.secret: none
+
+framework:
+    test: ~
