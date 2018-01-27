@@ -3,3 +3,5 @@ parameters:
 
 framework:
     test: ~
+    profiler:
+        collect: false
