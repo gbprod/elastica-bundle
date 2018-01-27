@@ -68,6 +68,8 @@ class ElasticaLoggerTest extends TestCase
         // AssertNoErrorExpected
 
         $testedInstance->{$level}('message', ['context']);
+        // Empty assertion to suppress PHPUnit blaming for lack of tests
+        $this->assertTrue(true);
     }
 
     public function testGetZeroIfNoQueriesAdded()
@@ -116,5 +118,7 @@ class ElasticaLoggerTest extends TestCase
         // AssertNoErrorExpected
 
         $testedInstance->log('debug', 'message', ['context']);
+        // Empty assertion to suppress PHPUnit blaming for lack of tests
+        $this->assertTrue(true);
     }
 }
