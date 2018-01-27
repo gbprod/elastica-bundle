@@ -32,8 +32,15 @@ class WebToolbarTest extends WebTestCase
             $container->get('twig'),
             $container->getParameter('data_collector.templates')
         );
-        $templates = $manager->getNames($profile);
-        $this->assertArrayHasKey('elastica', $templates);
+        $reflection = new \ReflectionObject($manager);
+        if ($reflection->getMethod('getNames')->isPublic()) {
+            // This is normal version of TemplateManager
+            $templates = $manager->getNames($profile);
+            $this->assertArrayHasKey('elastica', $templates);
+        } else {
+            // This is Symfony 3.0.x where TemplateManager::getNames() is protected, not public
+            $this->assertNotEmpty($manager->getName($profile, 'elastica'));
+        }
     }
 
     public function testElasticDataIsRenderedInWebProfilerToolbar()
