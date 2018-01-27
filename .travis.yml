@@ -50,6 +50,12 @@ matrix:
 before_script:
     - composer self-update
     - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/expression-language:${SYMFONY_VERSION} --no-update
+    - composer require symfony/yaml:${SYMFONY_VERSION} --no-update
+    - composer require symfony/web-profiler-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/twig-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/browser-kit:${SYMFONY_VERSION} --no-update
+    - composer require symfony/css-selector:${SYMFONY_VERSION} --no-update
     - composer require ruflin/elastica:${ELASTICA_VERSION} --no-update
     - composer update --no-interaction
 
