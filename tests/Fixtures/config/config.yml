@@ -3,6 +3,7 @@ imports:
 
 parameters:
     kernel.secret: none
+    debug.file_link_format: ~
 
 framework:
     router:
