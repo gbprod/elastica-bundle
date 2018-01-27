@@ -8,8 +8,8 @@ use GBProd\ElasticaBundle\DependencyInjection\ElasticaExtension;
 use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Tests for ElasticaExtension
@@ -28,6 +28,20 @@ class ElasticaExtensionTest extends TestCase
         $this->container = new ContainerBuilder();
 
         $this->container->setParameter('kernel.debug', true);
+    }
+
+    private function ensureAutowiring()
+    {
+        $autowire = false;
+        if (class_exists(ContainerBuilder::class)) {
+            $reflection = new \ReflectionClass(ContainerBuilder::class);
+            if ($reflection->hasMethod('autowire')) {
+                $autowire = true;
+            }
+        }
+        if (!$autowire) {
+            $this->markTestSkipped('This test requires services auto-wiring functionality in Symfony 3.3+');
+        }
     }
 
     public function testCreateClients()
@@ -59,7 +73,7 @@ class ElasticaExtensionTest extends TestCase
         $config = [
             [
                 'clients' => [
-                    'default' => [
+                    'default'   => [
                         'host' => '127.0.0.1',
                         'port' => '9200',
                     ],
@@ -127,5 +141,144 @@ class ElasticaExtensionTest extends TestCase
 
         $this->assertEquals(ElasticaLogger::class, $loggerDefinition->getClass());
         $this->assertNull($loggerDefinition->getArgument(0));
+    }
+
+    /**
+     * @dataProvider dpDefaultClientDefinition
+     * @param array $config
+     * @param string $actualId
+     * @throws \Exception
+     */
+    public function testSettingDefaultClientResultsIntoProperServiceAliasing($config, $actualId)
+    {
+        $this->ensureAutowiring();
+        $this->extension->load($config, $this->container);
+        $this->assertTrue($this->container->has(Client::class));
+        $this->assertInstanceOf(Client::class, $this->container->get(Client::class));
+        $this->assertSame($this->container->get(Client::class), $this->container->get($actualId));
+    }
+
+    public function dpDefaultClientDefinition()
+    {
+        return [
+            // Explicit selection of default client
+            [
+                [
+                    [
+                        'clients'        => [
+                            'default' => [
+                                'host' => '127.0.0.1',
+                                'port' => '9200',
+                            ],
+                            'another' => [
+                                'host' => '192.168.1.1',
+                                'port' => '9200',
+                            ],
+                        ],
+                        'default_client' => 'default'
+                    ],
+                ],
+                'elastica.default_client',
+            ],
+            // Make sure that we're not selecting first client in a case of explicit selection
+            [
+                [
+                    [
+                        'clients'        => [
+                            'default' => [
+                                'host' => '127.0.0.1',
+                                'port' => '9200',
+                            ],
+                            'another' => [
+                                'host' => '192.168.1.1',
+                                'port' => '9200',
+                            ],
+                        ],
+                        'default_client' => 'another'
+                    ],
+                ],
+                'elastica.another_client',
+            ],
+            // Default selection should select first client from the list
+            [
+                [
+                    [
+                        'clients'        => [
+                            'default' => [
+                                'host' => '127.0.0.1',
+                                'port' => '9200',
+                            ],
+                            'another' => [
+                                'host' => '192.168.1.1',
+                                'port' => '9200',
+                            ],
+                        ],
+                        'default_client' => null
+                    ],
+                ],
+                'elastica.default_client',
+            ],
+        ];
+    }
+
+    /**
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     */
+    public function testSettingIncorrectDefaultClientResultsIntoException()
+    {
+        $this->ensureAutowiring();
+        $config = [
+            [
+                'clients'        => [
+                    'default' => [
+                        'host' => '127.0.0.1',
+                        'port' => '9200',
+                    ]
+                ],
+                'default_client' => 'incorrect'
+            ]
+        ];
+
+        $this->extension->load($config, $this->container);
+    }
+
+    public function testDisablingDefaultClientShouldNotResultIntoItsRegistration()
+    {
+        $this->ensureAutowiring();
+        $config = [
+            [
+                'clients'        => [
+                    'default' => [
+                        'host' => '127.0.0.1',
+                        'port' => '9200',
+                    ]
+                ],
+                'default_client' => false
+            ]
+        ];
+
+        $this->extension->load($config, $this->container);
+        $this->assertFalse($this->container->has(Client::class));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\LogicException
+     */
+    public function testAttemptToRedefineAlreadyAvailableServiceShouldResultInException()
+    {
+        $this->ensureAutowiring();
+        $this->container->setDefinition(Client::class, new Definition(Client::class));
+        $config = [
+            [
+                'clients' => [
+                    'default' => [
+                        'host' => '127.0.0.1',
+                        'port' => '9200',
+                    ]
+                ],
+            ]
+        ];
+
+        $this->extension->load($config, $this->container);
     }
 }

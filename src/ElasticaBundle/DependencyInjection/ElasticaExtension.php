@@ -7,6 +7,8 @@ use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -30,7 +32,7 @@ class ElasticaExtension extends Extension
 
         $loader = new Loader\YamlFileLoader(
             $container,
-            new FileLocator(__DIR__.'/../Resources/config')
+            new FileLocator(__DIR__ . '/../Resources/config')
         );
 
         $loader->load('services.yml');
@@ -45,8 +47,7 @@ class ElasticaExtension extends Extension
             ->register('elastica.logger', ElasticaLogger::class)
             ->addArgument($this->createLoggerReference($config))
             ->addArgument('%kernel.debug%')
-            ->setPublic(true)
-        ;
+            ->setPublic(true);
 
         if ('logger' === $config['logger']) {
             $definition->addTag('monolog.logger', ['channel' => 'elastica']);
@@ -65,10 +66,38 @@ class ElasticaExtension extends Extension
         return null;
     }
 
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @throws \Symfony\Component\DependencyInjection\Exception\LogicException
+     * @throws InvalidArgumentException
+     */
     private function loadClients(array $config, ContainerBuilder $container)
     {
         foreach ($config['clients'] as $clientName => $clientConfig) {
             $this->loadClient($clientName, $clientConfig, $container);
+        }
+        // If container have support for services auto-wiring
+        // and we have client to define as default - create service alias for auto-wiring
+        if (!method_exists($container, 'autowire')) {
+            return;
+        }
+        $defaultClient = $config['default_client'];
+        if ($defaultClient === false) {
+            // Default client definition is not allowed
+            return;
+        }
+        if ($defaultClient === null && !empty($config['clients'])) {
+            $defaultClient = key($config['clients']);
+        }
+        if ($defaultClient !== null && !array_key_exists($defaultClient, $config['clients'])) {
+            throw new InvalidArgumentException(sprintf('Invalid default Elasticsearch client is defined: %s', $defaultClient));
+        }
+        if ($container->hasDefinition(Client::class)) {
+            throw new LogicException('Default Elasticsearch client registration is requested, but client service is already defined in container');
+        }
+        if ($defaultClient !== null) {
+            $container->setAlias(Client::class, $this->createClientId($defaultClient));
         }
     }
 
@@ -84,8 +113,7 @@ class ElasticaExtension extends Extension
                 'log',
                 $container->getParameter('kernel.debug')
             ])
-            ->setPublic(true)
-        ;
+            ->setPublic(true);
     }
 
     private function createClientId($clientName)

@@ -4,6 +4,7 @@ namespace GBProd\ElasticaBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Configuration
@@ -59,6 +60,16 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+
+        if (class_exists(ContainerBuilder::class)) {
+            $reflection = new \ReflectionClass(ContainerBuilder::class);
+            if ($reflection->hasMethod('autowire')) {
+                $rootNode
+                    ->children()
+                        ->scalarNode('default_client')->defaultNull()->end()
+                    ->end();
+            }
+        }
 
         return $treeBuilder;
     }
