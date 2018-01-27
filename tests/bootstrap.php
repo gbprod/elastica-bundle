@@ -3,6 +3,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // Cleanup previously created Symfony container and logs
 $rmDir = function ($path) {
+    if (!file_exists($path) || !is_dir($path)) {
+        return;
+    }
     $dh = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::CURRENT_AS_FILEINFO),
         RecursiveIteratorIterator::CHILD_FIRST
