@@ -2,7 +2,6 @@
 
 namespace Tests\GBProd\ElasticaBundle\DataCollector;
 
-use GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\WebProfilerBundle\Profiler\TemplateManager;
 use Symfony\Component\CssSelector\CssSelectorConverter;
@@ -82,7 +81,6 @@ class WebToolbarTest extends WebTestCase
      */
     private function createProfile()
     {
-        /** @var ElasticaDataCollector $collector */
         $collector = $this->getContainer()->get('elastica.data_collector');
         $token = 'test' . mt_rand(100000, 999999);
         $profile = new Profile($token);
