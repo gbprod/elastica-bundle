@@ -60,6 +60,7 @@ class ElasticaLoggerTest extends TestCase
 
     /**
      * @dataProvider getLevels
+     * @doesNotPerformAssertions
      */
     public function testNotDelegateLogsLevels($level)
     {
@@ -68,8 +69,6 @@ class ElasticaLoggerTest extends TestCase
         // AssertNoErrorExpected
 
         $testedInstance->{$level}('message', ['context']);
-        // Empty assertion to suppress PHPUnit blaming for lack of tests
-        $this->assertTrue(true);
     }
 
     public function testGetZeroIfNoQueriesAdded()
@@ -111,14 +110,15 @@ class ElasticaLoggerTest extends TestCase
         $this->assertEquals(0, $elasticaLogger->getNbQueries());
     }
 
-     public function testNotDelegateLog()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNotDelegateLog()
     {
         $testedInstance = new ElasticaLogger(null);
 
         // AssertNoErrorExpected
 
         $testedInstance->log('debug', 'message', ['context']);
-        // Empty assertion to suppress PHPUnit blaming for lack of tests
-        $this->assertTrue(true);
     }
 }
