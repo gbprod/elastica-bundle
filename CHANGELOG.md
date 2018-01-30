@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.1.0...HEAD)
 
+ - Added support for auto-wiring default Elasticsearch connection service into Symfony 3.3+
+
 ## [v1.1.0](https://github.com/gbprod/elastica-bundle/compare/v1.0.1...HEAD)
 
  - Symfony 4 compatibility (#20)
