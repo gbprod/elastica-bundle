@@ -16,15 +16,23 @@ class WebToolbarTest extends WebTestCase
      */
     private $client;
 
+    /**
+     * {inheritdoc}
+     */
+    public function setUp()
+    {
+        $this->client = self::createClient();
+    }
+
     public function testElasticaWebToolbarIsRegisteredInDataCollectorTemplates()
     {
-        $templates = $this->getContainer()->getParameter('data_collector.templates');
+        $templates = $this->client->getContainer()->getParameter('data_collector.templates');
         $this->assertArrayHasKey('elastica.data_collector', $templates);
     }
 
     public function testElasticaWebToolbarIsSelectedForRendering()
     {
-        $container = $this->getContainer();
+        $container = $this->client->getContainer();
         $profile = $this->createProfile();
         $manager = new TemplateManager(
             $container->get('profiler'),
@@ -36,18 +44,22 @@ class WebToolbarTest extends WebTestCase
 
     public function testElasticDataIsRenderedInWebProfilerToolbar()
     {
-        $client = self::createClient();
         // Just to be able to get valid request / response objects that are required by data collector
-        $client->request('GET', '/_wdt/no-token');
+        $this->client->request('GET', '/_wdt/no-token');
 
         $profile = $this->createProfile();
-        $profile->getCollector('elastica')->collect($client->getRequest(), $client->getResponse());
-        $profiler = $this->getContainer()->get('profiler');
+        $profile->getCollector('elastica')->collect($this->client->getRequest(), $this->client->getResponse());
+        $profiler = $this->client->getContainer()->get('profiler');
         $profiler->saveProfile($profile);
 
-        $crawler = $client->request('GET', '/_wdt/' . $profile->getToken());
-        /** @noinspection NullPointerExceptionInspection */
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', '/_wdt/' . $profile->getToken());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertToolbarButtonExists($crawler);
+    }
+
+    private function assertToolbarButtonExists($crawler)
+    {
         if (class_exists(CssSelectorConverter::class)) {
             // This is Symfony 2.8+ where we're able to pass CSS selector directly and have v2 of profiler markup
             $this->assertGreaterThan(0, $crawler->filter('.sf-toolbar-block-elastica')->count());
@@ -58,30 +70,11 @@ class WebToolbarTest extends WebTestCase
     }
 
     /**
-     * @return Client
-     */
-    private function getClient()
-    {
-        if (!$this->client) {
-            $this->client = self::createClient();
-        }
-        return $this->client;
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    private function getContainer()
-    {
-        return $this->getClient()->getContainer();
-    }
-
-    /**
      * @return Profile
      */
     private function createProfile()
     {
-        $collector = $this->getContainer()->get('elastica.data_collector');
+        $collector = $this->client->getContainer()->get('elastica.data_collector');
         $token = 'test' . mt_rand(100000, 999999);
         $profile = new Profile($token);
         $profile->addCollector($collector);
