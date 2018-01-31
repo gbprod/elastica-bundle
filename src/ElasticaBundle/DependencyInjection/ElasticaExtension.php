@@ -125,7 +125,8 @@ class ElasticaExtension extends Extension
             return;
         }
         if ($container->hasDefinition(Client::class)) {
-            throw new LogicException('Default Elasticsearch client autowiring setup is enabled, but Elastica client service is already defined in container');
+            throw new LogicException('Default Elasticsearch client autowiring setup is enabled, ' .
+                'but Elastica client service is already defined in container');
         }
         $container->setAlias(Client::class, $this->createClientId('default'));
     }
