@@ -39,6 +39,7 @@ class ElasticaExtension extends Extension
 
         $this->loadLogger($config, $container);
         $this->loadClients($config, $container);
+        $this->setupAutowire($config, $container);
     }
 
     private function loadLogger(array $config, ContainerBuilder $container)
@@ -77,30 +78,14 @@ class ElasticaExtension extends Extension
         foreach ($config['clients'] as $clientName => $clientConfig) {
             $this->loadClient($clientName, $clientConfig, $container);
         }
-        // If container have support for services auto-wiring
-        // and we have client to define as default - create service alias for auto-wiring
-        if (!method_exists($container, 'autowire')) {
-            return;
-        }
-        $defaultClient = $config['default_client'];
-        if ($defaultClient === false) {
-            // Default client definition is not allowed
-            return;
-        }
-        if ($defaultClient === null && !empty($config['clients'])) {
-            $defaultClient = key($config['clients']);
-        }
-        if ($defaultClient !== null && !array_key_exists($defaultClient, $config['clients'])) {
-            throw new InvalidArgumentException(sprintf('Invalid default Elasticsearch client is defined: %s', $defaultClient));
-        }
-        if ($container->hasDefinition(Client::class)) {
-            throw new LogicException('Default Elasticsearch client registration is requested, but client service is already defined in container');
-        }
-        if ($defaultClient !== null) {
-            $container->setAlias(Client::class, $this->createClientId($defaultClient));
-        }
     }
 
+    /**
+     * @param string $clientName
+     * @param array $clientConfig
+     * @param ContainerBuilder $container
+     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     */
     private function loadClient($clientName, array $clientConfig, ContainerBuilder $container)
     {
         $container
@@ -114,6 +99,35 @@ class ElasticaExtension extends Extension
                 $container->getParameter('kernel.debug')
             ])
             ->setPublic(true);
+    }
+
+    /**
+     * Configure service auto-wiring for default Elastica client
+     * for Symfony 3.3+
+     *
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\DependencyInjection\Exception\LogicException
+     */
+    private function setupAutowire(array $config, ContainerBuilder $container)
+    {
+        if (!method_exists($container, 'autowire')) {
+            // This container have no support for services auto-wiring
+            return;
+        }
+        if (!$config['autowire']) {
+            // Auto-wiring for default client is explicitly disabled
+            return;
+        }
+        if (!array_key_exists('default', $config['clients'])) {
+            // No "default" client is available
+            return;
+        }
+        if ($container->hasDefinition(Client::class)) {
+            throw new LogicException('Default Elasticsearch client autowiring setup is enabled, but Elastica client service is already defined in container');
+        }
+        $container->setAlias(Client::class, $this->createClientId('default'));
     }
 
     private function createClientId($clientName)

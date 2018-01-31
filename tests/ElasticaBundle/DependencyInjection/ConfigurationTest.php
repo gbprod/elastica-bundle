@@ -5,7 +5,6 @@ namespace Tests\GBProd\ElasticaBundle\DependencyInjection;
 use GBProd\ElasticaBundle\DependencyInjection\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Tests for Configuration
@@ -21,32 +20,15 @@ class ConfigurationTest extends TestCase
         $this->configuration = new Configuration();
     }
 
-    /**
-     * @return bool
-     */
-    private function haveAutowiring()
-    {
-        if (!class_exists(ContainerBuilder::class)) {
-            return false;
-        }
-        $reflection = new \ReflectionClass(ContainerBuilder::class);
-        if ($reflection->hasMethod('autowire')) {
-            return true;
-        }
-        return false;
-    }
-
     public function testEmptyConfiguration()
     {
         $processed = $this->process([]);
 
         $expected = [
-            'clients' => [],
-            'logger'  => 'logger',
+            'clients'  => [],
+            'logger'   => 'logger',
+            'autowire' => true,
         ];
-        if ($this->haveAutowiring()) {
-            $expected['default_client'] = null;
-        }
         $this->assertEquals($expected, $processed);
     }
 
@@ -159,24 +141,6 @@ class ConfigurationTest extends TestCase
         $this->assertNull($processed['clients']['default']['connections'][0]['transport']);
         $this->assertNull($processed['clients']['default']['connections'][0]['timeout']);
         $this->assertTrue($processed['clients']['default']['connections'][0]['persistent']);
-    }
-
-    public function testDefaultClientConfigurationOptionIsAvailableInACaseOfAutowiringSupport()
-    {
-        $processed = $this->process([
-            [
-                'clients' => [
-                    'default' => [
-                        'host' => '127.0.0.1',
-                        'port' => '9200',
-                    ]
-                ],
-            ]
-        ]);
-        if ($this->haveAutowiring()) {
-            $this->assertArrayHasKey('default_client', $processed);
-        } else {
-            $this->assertArrayNotHasKey('default_client', $processed);
-        }
+        $this->assertTrue($processed['autowire']);
     }
 }
