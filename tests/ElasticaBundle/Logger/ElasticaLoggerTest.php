@@ -60,6 +60,7 @@ class ElasticaLoggerTest extends TestCase
 
     /**
      * @dataProvider getLevels
+     * @doesNotPerformAssertions
      */
     public function testNotDelegateLogsLevels($level)
     {
@@ -109,7 +110,10 @@ class ElasticaLoggerTest extends TestCase
         $this->assertEquals(0, $elasticaLogger->getNbQueries());
     }
 
-     public function testNotDelegateLog()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNotDelegateLog()
     {
         $testedInstance = new ElasticaLogger(null);
 

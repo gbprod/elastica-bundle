@@ -1,0 +1,18 @@
+imports:
+    - { resource: '@ElasticaBundle/Resources/config/services.yml' }
+
+parameters:
+    kernel.secret: none
+    debug.file_link_format: ~
+
+framework:
+    router:
+        resource: '%kernel.root_dir%/config/routing.yml'
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        collect: true
+
+web_profiler:
+    toolbar: true
