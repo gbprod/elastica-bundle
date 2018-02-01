@@ -7,7 +7,6 @@ use GBProd\ElasticaBundle\Logger\ElasticaLogger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -70,8 +69,6 @@ class ElasticaExtension extends Extension
     /**
      * @param array $config
      * @param ContainerBuilder $container
-     * @throws \Symfony\Component\DependencyInjection\Exception\LogicException
-     * @throws InvalidArgumentException
      */
     private function loadClients(array $config, ContainerBuilder $container)
     {
@@ -84,7 +81,6 @@ class ElasticaExtension extends Extension
      * @param string $clientName
      * @param array $clientConfig
      * @param ContainerBuilder $container
-     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
     private function loadClient($clientName, array $clientConfig, ContainerBuilder $container)
     {
@@ -107,8 +103,7 @@ class ElasticaExtension extends Extension
      *
      * @param array $config
      * @param ContainerBuilder $container
-     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @throws \Symfony\Component\DependencyInjection\Exception\LogicException
+     * @throws LogicException
      */
     private function setupAutowire(array $config, ContainerBuilder $container)
     {

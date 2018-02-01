@@ -34,7 +34,6 @@ class ElasticaExtensionTest extends TestCase
     {
         $autowire = false;
         if (class_exists(ContainerBuilder::class)) {
-            /** @noinspection PhpUnhandledExceptionInspection */
             $reflection = new \ReflectionClass(ContainerBuilder::class);
             if ($reflection->hasMethod('autowire')) {
                 $autowire = true;
@@ -164,10 +163,7 @@ class ElasticaExtensionTest extends TestCase
         ];
         $this->extension->load($config, $this->container);
         $this->assertTrue($this->container->has(Client::class));
-        /** @noinspection PhpUnhandledExceptionInspection */
         $this->assertInstanceOf(Client::class, $this->container->get(Client::class));
-        /** @noinspection PhpUnhandledExceptionInspection */
-        /** @noinspection MissingService */
         $this->assertSame($this->container->get(Client::class), $this->container->get('elastica.default_client'));
     }
 
