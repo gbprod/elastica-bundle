@@ -4,7 +4,6 @@ namespace Tests\GBProd\ElasticaBundle\DependencyInjection;
 
 use GBProd\ElasticaBundle\DependencyInjection\Configuration;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -25,10 +24,12 @@ class ConfigurationTest extends TestCase
     {
         $processed = $this->process([]);
 
-        $this->assertEquals([
-            'clients' => [],
-            'logger'  => 'logger',
-        ], $processed);
+        $expected = [
+            'clients'  => [],
+            'logger'   => 'logger',
+            'autowire' => true,
+        ];
+        $this->assertEquals($expected, $processed);
     }
 
     protected function process(array $config)
@@ -70,7 +71,7 @@ class ConfigurationTest extends TestCase
         $processed = $this->process([
             [
                 'clients' => [
-                    'default' => [
+                    'default'   => [
                         'host' => '127.0.0.1',
                         'port' => '9200',
                     ],
@@ -140,5 +141,6 @@ class ConfigurationTest extends TestCase
         $this->assertNull($processed['clients']['default']['connections'][0]['transport']);
         $this->assertNull($processed['clients']['default']['connections'][0]['timeout']);
         $this->assertTrue($processed['clients']['default']['connections'][0]['persistent']);
+        $this->assertTrue($processed['autowire']);
     }
 }

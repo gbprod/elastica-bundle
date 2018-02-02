@@ -94,6 +94,22 @@ You can now use service `elastica.default_client` or `elastica.my_other_client`
 $client = $container->get('elastica.default_client');
 ```
 
+### Services autowiring support
+
+Symfony 3.3 have introduced support for [services autowiring](https://symfony.com/doc/3.3/service_container/3.3-di-changes.html). To be able to autowire Elastica connection into your services you need to setup your [client configuration](#clients) with a name `default`. In a case if you have multiple connections - only `default` connection will be enabled for autowiring because services autowiring is resolved by class names. 
+
+Autowiring support is enabled by default, but if you need to disable it for some reason - you can do it by set `autowire: false` parameter:
+
+```yaml
+# app/config/config.yml
+elastica:
+    autowire: false
+    clients:
+        default:
+            host: 127.0.0.1
+            port: 9200
+```
+
 ## Tests
 
 Clone this repository (or a fork). You should have `php>=5.6` and `composer` installed.
