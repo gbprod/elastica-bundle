@@ -2,7 +2,7 @@ services:
     elastica.data_collector:
         class: GBProd\ElasticaBundle\DataCollector\ElasticaDataCollector
         tags:
-            - { name: 'data_collector', template: 'ElasticaBundle:Collector:elastica', id: 'elastica' }
+            - { name: 'data_collector', template: '@Elastica/Collector/elastica.html.twig', id: 'elastica' }
         arguments:
             - '@elastica.logger'
         public: true
