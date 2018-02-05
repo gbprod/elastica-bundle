@@ -103,6 +103,7 @@ class ElasticaExtension extends Extension
      *
      * @param array $config
      * @param ContainerBuilder $container
+     *
      * @throws LogicException
      */
     private function setupAutowire(array $config, ContainerBuilder $container)
@@ -111,26 +112,27 @@ class ElasticaExtension extends Extension
             // This container have no support for services auto-wiring
             return;
         }
+
         if (!$config['autowire']) {
             // Auto-wiring for default client is explicitly disabled
             return;
         }
+
         if (!array_key_exists('default', $config['clients'])) {
             // No "default" client is available
             return;
         }
+
         if ($container->hasDefinition(Client::class)) {
             throw new LogicException('Default Elasticsearch client autowiring setup is enabled, ' .
                 'but Elastica client service is already defined in container');
         }
+
         $container->setAlias(Client::class, $this->createClientId('default'));
     }
 
     private function createClientId($clientName)
     {
-        return sprintf(
-            self::CLIENT_ID_TEMPLATE,
-            $clientName
-        );
+        return sprintf(self::CLIENT_ID_TEMPLATE, $clientName);
     }
 }

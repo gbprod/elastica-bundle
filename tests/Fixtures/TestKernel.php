@@ -29,7 +29,6 @@ class TestKernel extends Kernel
 
     /**
      * @param LoaderInterface $loader
-     * @throws \Exception
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {

@@ -7,6 +7,9 @@ use Tests\GBProd\Fixtures\TestKernel;
 
 abstract class KernelTestCase extends BaseKernelTestCase
 {
+    /**
+     * {inheritdoc}
+     */
     public function setUp()
     {
         self::bootKernel();
