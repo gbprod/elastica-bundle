@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.1.0...HEAD)
+## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.2.0...HEAD)
+
+## [v1.2.0](https://github.com/gbprod/elastica-bundle/compare/v1.1.0...v1.2.0)
 
  - Added support for auto-wiring default Elasticsearch connection service into Symfony 3.3+
  - Fixed problem with Elasticsearch profiler widget integration into Symfony toolbar 
@@ -19,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  - fix documentation
  - fix phpunit version
 
-## [1.0.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v1.0.0)
+## [v1.0.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v1.0.0)
 
 ### Changed
 
@@ -32,7 +34,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  - Customize logger
  - Contributing file
 
-## [0.2.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v0.2.0)
+## [v0.2.0](https://github.com/gbprod/elastica-bundle/compare/v0.1.2...v0.2.0)
 
 Added
 
@@ -45,7 +47,7 @@ Updated
 
 - Set scrutinizer codesniffer to PSR2
 
-## [0.1.2](https://github.com/gbprod/elastica-bundle/compare/v0.1.1...v0.1.2)
+## [v0.1.2](https://github.com/gbprod/elastica-bundle/compare/v0.1.1...v0.1.2)
 
 ### Changed
 

@@ -9,6 +9,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Tests\GBProd\WebTestCase;
 
+/**
+ * Tests for WebToolbar
+ *
+ * @author FlyingDR
+ */
 class WebToolbarTest extends WebTestCase
 {
     /**
@@ -78,6 +83,7 @@ class WebToolbarTest extends WebTestCase
         $token = 'test' . mt_rand(100000, 999999);
         $profile = new Profile($token);
         $profile->addCollector($collector);
+
         return $profile;
     }
 }

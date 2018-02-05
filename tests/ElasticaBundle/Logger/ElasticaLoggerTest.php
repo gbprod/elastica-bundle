@@ -117,8 +117,6 @@ class ElasticaLoggerTest extends TestCase
     {
         $testedInstance = new ElasticaLogger(null);
 
-        // AssertNoErrorExpected
-
         $testedInstance->log('debug', 'message', ['context']);
     }
 }
