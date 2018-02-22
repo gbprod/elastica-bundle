@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file based on the
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/gbprod/elastica-bundle/compare/v1.2.0...HEAD)
+ 
+ - New licence
 
 ## [v1.2.0](https://github.com/gbprod/elastica-bundle/compare/v1.1.0...v1.2.0)
 
